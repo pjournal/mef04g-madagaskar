@@ -1,7 +1,8 @@
 ---
 title: "Project Proposal"
-author: "MadagaskaR"
-output: 
+author: "madagaskaR"
+date: 17-11-2020
+output:
   html_document:
     highlight: tango
     theme: united
@@ -10,7 +11,6 @@ output:
       collapsed: false
       smooth_scroll: false
     toc_depth: 3
-date: "`r format(Sys.time(), '%d %B %Y')`"
 ---
 
 ## Group Members
@@ -21,19 +21,13 @@ date: "`r format(Sys.time(), '%d %B %Y')`"
 - Sena KALEMCİ
 - Tuğba ÜNAL
 
-
-
 ```{r message=FALSE, warning=FALSE, paged.print=TRUE}
 
 library(readxl)
 library(tidyverse)
-
-raw_df <- read.csv("C:/Users/NERIMAN.GURSOY/Desktop/R data/earthquake.csv")
-
+raw_df <- read.csv("C:/Users/unalt/Desktop/earthquake.csv")
 glimpse(raw_df)
-
 ```
-
 
 ## Overview of Dataset
 
@@ -58,9 +52,9 @@ The dataset covers up all the recorded earthquakes in Turkey between 1910 and 20
 - mb: mb of earthquake
 
 Dataset can be shown via [link](https://www.kaggle.com/caganseval/earthquake)
+  
 
-```{r }
+```{r}
 summary(raw_df)
 ```
 
-## Plan
