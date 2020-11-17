@@ -1,0 +1,66 @@
+---
+title: "Project Proposal"
+author: "MadagaskaR"
+output: 
+  html_document:
+    highlight: tango
+    theme: united
+    toc: true
+    toc_float: 
+      collapsed: false
+      smooth_scroll: false
+    toc_depth: 3
+date: "`r format(Sys.time(), '%d %B %Y')`"
+---
+
+## Group Members
+
+- Barış SİVAS
+- Neriman GÜRSOY
+- Ozan Barış BAYKAN
+- Sena KALEMCİ
+- Tuğba ÜNAL
+
+
+
+```{r message=FALSE, warning=FALSE, paged.print=TRUE}
+
+library(readxl)
+library(tidyverse)
+
+raw_df <- read.csv("C:/Users/NERIMAN.GURSOY/Desktop/R data/earthquake.csv")
+
+glimpse(raw_df)
+
+```
+
+
+## Overview of Dataset
+
+The dataset covers up all the recorded earthquakes in Turkey between 1910 and 2017. There are 24007 rows and 17 variables. 
+
+- id: id of earthquake
+- date: date of earthquake
+- time: time of earthquake
+- lat: latitude of earthquake
+- long: longitude of earthquake
+- country: country of earthquake
+- city: city of earthquake
+- area: area of earthquake
+- direction: direction of earthquake
+- dist: distance of direction in km
+- depth: depth of earthquake
+- xm: xm of earthquake
+- md: md of earthquake
+- richter: Intensity of earthquake (Richter)
+- mw: mw of earthquake
+- ms: ms of earthquake
+- mb: mb of earthquake
+
+Dataset can be shown via [link](https://www.kaggle.com/caganseval/earthquake)
+
+```{r }
+summary(raw_df)
+```
+
+## Plan
