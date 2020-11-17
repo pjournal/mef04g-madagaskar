@@ -1,3 +1,3 @@
 ## Group Project
 
-[Project Proposal](Project-Proposal.html)
+[Project Proposal](Project_Proposal.html)
