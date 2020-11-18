@@ -25,7 +25,8 @@ date: "`r format(Sys.time(), '%d %B %Y')`"
 
 ## Overview of Dataset
 
-The dataset covers up all the recorded earthquakes in Turkey between 1910 and 2017.This data is obtained from [Kaggle](https://www.kaggle.com/caganseval/earthquake). In the dataset we have 24007 observations with 17 features.
+The dataset covers up all the recorded earthquakes in Turkey between 1910 and 2017.This data is obtained from [Kaggle](https://www.kaggle.com/caganseval/earthquake). Unfortunately, When we analyzed the data, we realized a gap between 1980 and 2000. Since the earthquake that occurred in 1999 was an important one in Turkish history, we will add its data. In the dataset, we have 24007 observations with 17 features.
+
 You can find variables as below:
 
 - id: id of earthquake
