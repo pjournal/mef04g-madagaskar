@@ -1,8 +1,7 @@
 ---
 title: "Project Proposal"
-author: "madagaskaR"
-date: 17-11-2020
-output:
+author: "MadagaskaR"
+output: 
   html_document:
     highlight: tango
     theme: united
@@ -11,6 +10,7 @@ output:
       collapsed: false
       smooth_scroll: false
     toc_depth: 3
+date: "`r format(Sys.time(), '%d %B %Y')`"
 ---
 
 ## Group Members
@@ -21,17 +21,12 @@ output:
 - Sena KALEMCİ
 - Tuğba ÜNAL
 
-```{r message=FALSE, warning=FALSE, paged.print=TRUE}
 
-library(readxl)
-library(tidyverse)
-raw_df <- read.csv("C:/Users/unalt/Desktop/earthquake.csv")
-glimpse(raw_df)
-```
 
 ## Overview of Dataset
 
-The dataset covers up all the recorded earthquakes in Turkey between 1910 and 2017. There are 24007 rows and 17 variables. 
+The dataset covers up all the recorded earthquakes in Turkey between 1910 and 2017.This data is obtained from [Kaggle](https://www.kaggle.com/caganseval/earthquake). In the dataset we have 24007 observations with 17 features.
+You can find variables as below:
 
 - id: id of earthquake
 - date: date of earthquake
@@ -51,10 +46,25 @@ The dataset covers up all the recorded earthquakes in Turkey between 1910 and 20
 - ms: ms of earthquake
 - mb: mb of earthquake
 
-Dataset can be shown via [link](https://www.kaggle.com/caganseval/earthquake)
-  
 
-```{r}
-summary(raw_df)
+You can find the glimpse of the data below.
+```{r message=FALSE, warning=FALSE, paged.print=TRUE}
+
+library(readxl)
+library(tidyverse)
+
+raw_df <- read.csv("earthquake.csv")
+
+glimpse(raw_df)
+
 ```
+
+## Plan
+
+Our tentative plan is as below:
+
+-	Cleaning, tidying and manipulating the data
+-	Using data visualizations to understand the data better
+-	Forecasting the earthquakes and creating a model
+-	To come up with a conclusion
 
