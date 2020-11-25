@@ -11,7 +11,6 @@
 
 <meta name="author" content="MadagaskaR" />
 
-<meta name="date" content="2020-11-18" />
 
 <title>Project Proposal</title>
 
@@ -1669,7 +1668,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Project Proposal</h1>
 <h4 class="author">MadagaskaR</h4>
-<h4 class="date">18 November 2020</h4>
+<h4 class="date">25 Kasım 2020</h4>
 
 </div>
 
@@ -1686,52 +1685,95 @@ div.tocify {
 </div>
 <div id="overview-of-dataset" class="section level2">
 <h2>Overview of Dataset</h2>
-<p>The dataset covers up all the recorded earthquakes in Turkey between 1910 and 2017.This data is obtained from <a href="https://www.kaggle.com/caganseval/earthquake">Kaggle</a>. In the dataset we have 24007 observations with 17 features. You can find variables as below:</p>
+<p>The dataset covers up all the recorded service information of x company’s dealers in Turkey. The data is belong the dates between 2019 and 2020. This data is obtained from x company where one of our team member is working for.In the dataset we have 587798 rows and 17 columns which gives different kind of parameters. According to the parameters a reader can get information about details of service processes such as model number, km, warranty start &amp; end date, prices, vehicle id etc.</p>
+<p>You can find variables as below:</p>
 <ul>
-<li>id: id of earthquake</li>
-<li>date: date of earthquake</li>
-<li>time: time of earthquake</li>
-<li>lat: latitude of earthquake</li>
-<li>long: longitude of earthquake</li>
-<li>country: country of earthquake</li>
-<li>city: city of earthquake</li>
-<li>area: area of earthquake</li>
-<li>direction: direction of earthquake</li>
-<li>dist: distance of direction in km</li>
-<li>depth: depth of earthquake</li>
-<li>xm: xm of earthquake</li>
-<li>md: md of earthquake</li>
-<li>richter: Intensity of earthquake (Richter)</li>
-<li>mw: mw of earthquake</li>
-<li>ms: ms of earthquake</li>
-<li>mb: mb of earthquake</li>
+<li>Malzeme: Material id</li>
+<li>Şasi No: Vehicle id</li>
+<li>Müşteri No: Dealer id</li>
+<li>İş emri no: Job order number</li>
+<li>Malzeme türü: Material type that used in service process</li>
+<li>İşlem tipi: Process type</li>
+<li>Araç giriş tarihi: Date of beginning the service process</li>
+<li>Araç çıkış tarihi: Date of ending the service process</li>
+<li>Miktar: Quantity of part or material used</li>
+<li>Net fiyat: Price</li>
+<li>Model: Model of vehicle</li>
+<li>Model: Production year of model</li>
+<li>İş emri kapanış tarihi: Job order ending date</li>
+<li>Araç km: Kilometer of vehicle</li>
+<li>Firma Şehir: City of the dealer</li>
+<li>Garanti Başlangıç tarihi: Date of beginning the warranty</li>
+<li>Garanti Bitiş tarihi: Date of ending the warranty</li>
 </ul>
 <p>You can find the glimpse of the data below.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">library</span>(readxl)</span>
 <span id="cb1-2"><a href="#cb1-2"></a><span class="kw">library</span>(tidyverse)</span>
 <span id="cb1-3"><a href="#cb1-3"></a></span>
-<span id="cb1-4"><a href="#cb1-4"></a>raw_df &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;earthquake.csv&quot;</span>)</span>
+<span id="cb1-4"><a href="#cb1-4"></a>raw_df &lt;-<span class="st"> </span><span class="kw">read_xlsx</span>(<span class="st">&quot;C:/Users/bsivas/Documents/Barış Innova Şahsi/DataScienceM/MEF-BDA/BDA503- Data Analytics/grup project/x_vehicle_company_service_dataset.xlsx&quot;</span>)</span>
 <span id="cb1-5"><a href="#cb1-5"></a></span>
 <span id="cb1-6"><a href="#cb1-6"></a><span class="kw">glimpse</span>(raw_df)</span></code></pre></div>
-<pre><code>## Rows: 24,007
+<pre><code>## Rows: 587,797
 ## Columns: 17
-## $ id        &lt;dbl&gt; 1.94e+13, 1.97e+13, 1.97e+13, 1.96e+13, 1.93e+13, 1.93e+1...
-## $ date      &lt;chr&gt; &quot;1939.12.26&quot;, &quot;1968.02.19&quot;, &quot;1970.03.28&quot;, &quot;1964.10.06&quot;, &quot;...
-## $ time      &lt;chr&gt; &quot;12:57:21 AM&quot;, &quot;12:45:42 AM&quot;, &quot;12:02:23 AM&quot;, &quot;12:31:23 AM...
-## $ lat       &lt;dbl&gt; 39.80, 39.40, 39.21, 40.30, 36.54, 37.98, 36.69, 38.72, 4...
-## $ long      &lt;dbl&gt; 39.51, 24.94, 29.51, 28.23, 27.33, 44.48, 25.92, 43.41, 3...
-## $ country   &lt;chr&gt; &quot;turkey&quot;, &quot;aegeansea&quot;, &quot;turkey&quot;, &quot;turkey&quot;, &quot;greece&quot;, &quot;tur...
-## $ city      &lt;chr&gt; &quot;erzincan&quot;, &quot;&quot;, &quot;kutahya&quot;, &quot;bursa&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;van&quot;, &quot;c...
-## $ area      &lt;chr&gt; &quot;kurutilek&quot;, &quot;&quot;, &quot;kizik_cavdarhisar&quot;, &quot;okcular_karacabey&quot;...
-## $ direction &lt;chr&gt; &quot;north_east&quot;, &quot;&quot;, &quot;north&quot;, &quot;north_east&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;nor...
-## $ dist      &lt;dbl&gt; 3.0, NA, 0.8, 1.5, NA, NA, NA, 1.5, 2.2, 2.3, 3.6, 4.3, N...
-## $ depth     &lt;dbl&gt; 20.0, 7.0, 18.0, 34.0, 100.0, 70.0, 10.0, 5.0, 10.0, 10.0...
-## $ xm        &lt;dbl&gt; 7.9, 7.1, 7.0, 7.0, 7.7, 7.6, 7.4, 7.2, 7.2, 7.2, 7.2, 7....
-## $ md        &lt;dbl&gt; 7.2, 0.0, 0.0, 0.0, 7.1, 7.0, 6.9, 0.0, 6.7, 6.7, 6.7, 6....
-## $ richter   &lt;dbl&gt; 7.2, 7.1, 7.0, 7.0, 7.0, 7.0, 6.8, 6.7, 6.7, 6.7, 6.7, 6....
-## $ mw        &lt;dbl&gt; 7.7, 6.2, 6.2, 6.2, 7.2, 7.1, 7.0, 7.2, 6.8, 6.8, 6.8, 6....
-## $ ms        &lt;dbl&gt; 7.9, 7.0, 7.0, 7.0, 7.7, 7.6, 7.4, 0.0, 7.2, 7.2, 7.2, 7....
-## $ mb        &lt;dbl&gt; 7.1, 6.0, 6.0, 6.0, 6.9, 6.9, 6.7, 0.0, 6.6, 6.6, 6.6, 6....</code></pre>
+## $ Malzeme                    &lt;chr&gt; &quot;malzeme_22459&quot;, &quot;malzeme_21191&quot;, &quot;malze...
+## $ `Şasi No`                  &lt;chr&gt; &quot;şasi_no_981&quot;, &quot;şasi_no_981&quot;, &quot;şasi_no_9...
+## $ `Müşteri No`               &lt;chr&gt; &quot;müşteri_30&quot;, &quot;müşteri_30&quot;, &quot;müşteri_30&quot;...
+## $ `İş Emri No`               &lt;chr&gt; &quot;000000000028839&quot;, &quot;000000000028839&quot;, &quot;0...
+## $ `Malzeme tipi`             &lt;chr&gt; &quot;Diğer&quot;, &quot;Yağ&quot;, &quot;Diğer&quot;, &quot;Yağ&quot;, &quot;Diğer&quot;,...
+## $ `İşlem tipi`               &lt;chr&gt; &quot;P.Bakım&quot;, &quot;P.Bakım&quot;, &quot;P.Bakım&quot;, &quot;P.Bakı...
+## $ `Araç giriş tarihi`        &lt;dttm&gt; 2020-01-13, 2020-01-13, 2020-01-13, 202...
+## $ `Araç çıkış tarihi`        &lt;chr&gt; &quot;00.00.0000&quot;, &quot;00.00.0000&quot;, &quot;00.00.0000&quot;...
+## $ Miktar                     &lt;dbl&gt; 1, 10, 1, 1, 2, 1, 1, 1, 1, 10, 1, 1, 2,...
+## $ `Net fiyat`                &lt;dbl&gt; NA, 13.66200, NA, 12.81555, NA, NA, NA, ...
+## $ Model                      &lt;chr&gt; &quot;model_4&quot;, &quot;model_4&quot;, &quot;model_4&quot;, &quot;model_...
+## $ `Yıl-Model`                &lt;dbl&gt; 2008, 2008, 2008, 2008, 2008, 2008, 2008...
+## $ `İş emri kapanış tarihi`   &lt;chr&gt; &quot;00.00.0000&quot;, &quot;00.00.0000&quot;, &quot;00.00.0000&quot;...
+## $ `Araç KM`                  &lt;dbl&gt; 213076, 213076, 213076, 213076, 213076, ...
+## $ `Firma Şehir`              &lt;chr&gt; &quot;Antalya&quot;, &quot;Antalya&quot;, &quot;Antalya&quot;, &quot;Antaly...
+## $ `Garanti Başlangıç tarihi` &lt;dttm&gt; 2007-12-31, 2007-12-31, 2007-12-31, 200...
+## $ `Garanti Bitiş tarihi`     &lt;chr&gt; &quot;00.00.0000&quot;, &quot;00.00.0000&quot;, &quot;00.00.0000&quot;...</code></pre>
+<p>You can find the summary of the data below.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">summary</span>(raw_df)</span></code></pre></div>
+<pre><code>##    Malzeme            Şasi No           Müşteri No         İş Emri No       
+##  Length:587797      Length:587797      Length:587797      Length:587797     
+##  Class :character   Class :character   Class :character   Class :character  
+##  Mode  :character   Mode  :character   Mode  :character   Mode  :character  
+##                                                                             
+##                                                                             
+##                                                                             
+##                                                                             
+##  Malzeme tipi        İşlem tipi        Araç giriş tarihi            
+##  Length:587797      Length:587797      Min.   :2019-01-01 00:00:00  
+##  Class :character   Class :character   1st Qu.:2019-06-29 00:00:00  
+##  Mode  :character   Mode  :character   Median :2020-01-06 00:00:00  
+##                                        Mean   :2019-12-21 13:09:52  
+##                                        3rd Qu.:2020-06-25 00:00:00  
+##                                        Max.   :2020-11-21 00:00:00  
+##                                                                     
+##  Araç çıkış tarihi      Miktar          Net fiyat           Model          
+##  Length:587797      Min.   :  0.010   Min.   :     0.0   Length:587797     
+##  Class :character   1st Qu.:  1.000   1st Qu.:    35.6   Class :character  
+##  Mode  :character   Median :  1.000   Median :    83.1   Mode  :character  
+##                     Mean   :  3.111   Mean   :   516.5                     
+##                     3rd Qu.:  2.000   3rd Qu.:   310.3                     
+##                     Max.   :500.000   Max.   :384403.1                     
+##                     NA&#39;s   :381       NA&#39;s   :4545                         
+##    Yıl-Model    İş emri kapanış tarihi    Araç KM         Firma Şehir       
+##  Min.   :1983   Length:587797          Min.   :       0   Length:587797     
+##  1st Qu.:2014   Class :character       1st Qu.:  167742   Class :character  
+##  Median :2016   Mode  :character       Median :  325554   Mode  :character  
+##  Mean   :2015                          Mean   :  456189                     
+##  3rd Qu.:2017                          3rd Qu.:  641200                     
+##  Max.   :2020                          Max.   :24315000                     
+##  NA&#39;s   :50                            NA&#39;s   :33                           
+##  Garanti Başlangıç tarihi      Garanti Bitiş tarihi
+##  Min.   :1983-01-01 00:00:00   Length:587797       
+##  1st Qu.:2014-01-28 00:00:00   Class :character    
+##  Median :2016-04-21 00:00:00   Mode  :character    
+##  Mean   :2015-02-09 05:22:03                       
+##  3rd Qu.:2017-05-05 00:00:00                       
+##  Max.   :2020-11-05 00:00:00                       
+##  NA&#39;s   :973</code></pre>
 </div>
 <div id="plan" class="section level2">
 <h2>Plan</h2>
@@ -1739,7 +1781,7 @@ div.tocify {
 <ul>
 <li>Cleaning, tidying and manipulating the data</li>
 <li>Using data visualizations to understand the data better</li>
-<li>Forecasting the earthquakes and creating a model</li>
+<li>Analyzing the relationship between variables</li>
 <li>To come up with a conclusion</li>
 </ul>
 </div>
