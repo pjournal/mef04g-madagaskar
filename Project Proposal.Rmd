@@ -13,7 +13,7 @@ output:
 date: "`r format(Sys.time(), '%d %B %Y')`"
 ---
 
-## Group Members
+## Group Members 
 
 - Barış SİVAS
 - Neriman GÜRSOY
