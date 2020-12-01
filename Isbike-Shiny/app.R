@@ -7,11 +7,14 @@
 #    http://shiny.rstudio.com/
 #
 
-library(rsconnect)
-rsconnect::deployApp('C:/Users/unalt/Desktop/shiny_app.Rmd')
+library(jsonlite)
+library(dplyr)
+library(lubridate)
+library(tidyverse)
+library(shiny)
 
+df<- readRDS(gzcon(url("https://github.com/pjournal/mef04g-madagaskar/blob/gh-pages/Isbike-Shiny/isbike_20201118.rds?raw=true")))
 
-df<- readRDS("C:/Users/unalt/Desktop/MEF/Data Analytics Essentials/MadagaskaR/isbike_20201118.rDs")
 df_new<- fromJSON(df)
 df_new2<- data.frame(df_new)
 
