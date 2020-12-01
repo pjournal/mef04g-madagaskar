@@ -1,0 +1,95 @@
+#
+# This is a Shiny web application. You can run the application by clicking
+# the 'Run App' button above.
+#
+# Find out more about building applications with Shiny here:
+#
+#    http://shiny.rstudio.com/
+#
+
+library(rsconnect)
+rsconnect::deployApp('C:/Users/unalt/Desktop/shiny_app.Rmd')
+
+
+df<- readRDS("C:/Users/unalt/Desktop/MEF/Data Analytics Essentials/MadagaskaR/isbike_20201118.rDs")
+df_new<- fromJSON(df)
+df_new2<- data.frame(df_new)
+
+
+df_new3 <- df_new2 %>% select(dataList.guid, dataList.istasyon_no, dataList.adi, dataList.aktif, dataList.bos,
+                              dataList.dolu, dataList.lat, dataList.lon, dataList.sonBaglanti) %>%
+    rename(Guid="dataList.guid", Station_No="dataList.istasyon_no", Station_Name="dataList.adi",
+           Active="dataList.aktif", Empty="dataList.bos", Full="dataList.dolu", Lat="dataList.lat",   Lon="dataList.lon",
+           Last_Connection="dataList.sonBaglanti")
+
+
+df_new3<- df_new3 %>%
+    transform(Last_Connection = as.POSIXct(Last_Connection,format='%Y-%m-%dT%H:%M:%S'),
+              Empty = as.numeric(Empty), 
+              Full = as.numeric(Full),
+              Lat = as.numeric(Lat),
+              Lon = as.numeric(Lon),
+              Station_No = as.numeric(Station_No))
+
+df_new3<- df_new3 %>% mutate(Occ_Rate=Full/(Full+Empty)*100)
+
+
+
+library(shiny)
+# Define UI for application that draws a histogram
+ui <- fluidPage(
+    # Application title
+    titlePanel("Isbike Occupancy Rate"),
+    # Sidebar with a slider input for number of bins
+    sidebarLayout(
+        sidebarPanel(
+            selectInput(inputId="Name",
+                        label="Select Station Name (Effects Station Info)",
+                        choices = c("", df_new3$Station_Name),
+                        multiple=TRUE),
+            
+            sliderInput("Ratio",
+                        "Select Occupancy Rate (Effects Plot)",
+                        min=0,
+                        max=100,
+                        value=c(40, 66))
+        ),
+        # Show a plot of the generated distribution
+        mainPanel(
+            tabsetPanel(
+                tabPanel(
+                    "Station Info", tableOutput("table")),
+                tabPanel(
+                    "Plot", plotOutput("Plot"))
+            )
+        )
+    )
+)
+# Define server logic required to draw a histogram
+server <- function(input, output) {
+    output$table <- renderTable({
+        
+        if(!("" %in% input$Name)){
+            df_new3 <- df_new3 %>% filter(Station_Name %in% input$Name)
+        }
+
+    
+        df_new3 %>% filter(Station_Name==input$Name)
+        
+    })
+    output$Plot <- renderPlot({
+        df_new3 %>% filter(Occ_Rate >= input$Ratio[1],
+                           Occ_Rate <= input$Ratio[2]) %>%
+            ggplot(aes(x=Occ_Rate, y= Station_Name, color=Station_Name)) + geom_point() +
+            labs(x="Occuracy Rate", y="Station Name") +
+            theme(
+                legend.position="bottom"
+            )
+    }, height = 2000, width = 1000)
+}
+# Run the application
+shinyApp(ui = ui, server = server)
+
+
+
+
