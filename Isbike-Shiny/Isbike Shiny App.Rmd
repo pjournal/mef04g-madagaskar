@@ -18,7 +18,7 @@ library(shiny)
 
 ```{r}
 
-df<- readRDS("C:/Users/unalt/Desktop/MEF/Data Analytics Essentials/MadagaskaR/isbike_20201118.rDs")
+df<- readRDS(gzcon(url("https://github.com/pjournal/mef04g-madagaskar/blob/gh-pages/Isbike-Shiny/isbike_20201118.rds?raw=true")))
 df_new<- fromJSON(df)
 df_new2<- data.frame(df_new)
 
@@ -101,4 +101,7 @@ server <- function(input, output) {
 shinyApp(ui = ui, server = server)
 ```
 
+```{r, eval=FALSE}
+Shiny Link: shiny::runGitHub("pjournal/mef04g-madagaskar",subdir="Isbike-Shiny",ref='gh-pages')
+```
 
