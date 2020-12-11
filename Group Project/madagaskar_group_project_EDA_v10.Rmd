@@ -1,0 +1,400 @@
+---
+title: "Exploratory Data Analysis"
+author: "MadagaskaR"
+date: "`r Sys.Date()`"
+output: 
+  html_document:
+    code_folding: hide
+    toc: yes
+    toc_depth: 3
+    toc_float:
+      collapsed: no
+    theme: united
+    highlight: tango
+  pdf_document:
+    toc: yes
+    toc_depth: '3'
+  word_document:
+    toc: yes
+    toc_depth: '3'
+    
+---
+
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(echo = TRUE, warning=FALSE, message=FALSE, error=FALSE)
+
+```
+
+# 1. Introduction
+
+## 1.1 Data
+
+The dataset covers up all the recorded service information of x company’s dealers in Turkey. The data is belong the dates between 2019 and 2020. This data is obtained from x company where one of our team member is working for.In the dataset we have 561,142 rows and 17 columns which gives different kind of parameters. According to the parameters a reader can get information about details of service processes such as model number, km, warranty start & end date, prices, vehicle id etc.
+
+You can find variables as below:
+
+- Material_id: Material id
+- Vehicle_id: Vehicle id
+- Dealer_id: Dealer id
+- Job_order_number: Job order number
+- material_type: Material type that used in service process
+- process_type: Process type
+- beginning_date: Date of beginning the service process
+- ending_date: Date of ending the service process
+- quantity: Quantity of part or material used
+- price: Price
+- Model:Model of vehicle
+- production_date: Production year of model
+- job_closed_date: Job order ending date
+- vehicle_km: Kilometer of vehicle
+- dealer_city: City of the dealer
+- warranty_beginning: Date of beginning the warranty
+- warranty_ending: Date of ending the warranty
+
+## 1.2. Objectives
+
+ In this project, we will first investigate the data for preprocessing to improve its quality. Then we will perform an exploratory data analysis(EDA) by data manipulation and data visualization steps.
+ 
+ 1. Data Preprocessing
+ 2. Data Manipulation
+ 3. Data Visualization
+ 4. Interactive Shiny App
+
+## 1.3 Used Packages
+
+The packages used during the project can be listed as below:
+
+- tidyverse
+- shiny
+- ggplot2
+- lubridate
+- knitr
+- rio
+- reshape
+- kableExtra
+
+
+We can use the glimpse function to inspect our data. By using it,each column is represented in a row with its data type and first few entries. We have 561,142 rows and 17 variables.
+
+```{r}
+library(readxl)
+library(tidyverse)
+library(lubridate)
+library(openxlsx)
+library(rio)
+library(reshape)
+library(kableExtra)
+
+raw_data <- rio::import("https://github.com/pjournal/mef04g-madagaskar/blob/gh-pages/Data/x_vehicle_company_service_dataset_v1.xlsx?raw=True")
+
+raw_dt=na.omit(raw_data)
+
+glimpse(raw_dt)
+```
+
+Transforming the job_closed_date column from character to datetime by using a function of lubridate which is as.POSIXct
+
+
+```{r}
+raw_dt1 = raw_dt
+raw_dt1$'Is emri kapanis tarihi' = str_replace_all(raw_dt1$'Is emri kapanis tarihi', "/","-")
+raw_dt1$'Is emri kapanis tarihi' <- as.POSIXct(raw_dt1$'Is emri kapanis tarihi',format = "%d-%m-%Y")
+glimpse(raw_dt1)
+```
+
+
+Renaming of the columns by using rename() function in order to get clear information about data.
+
+
+```{r}
+
+service_dt <- dplyr::rename(raw_dt1, "Material_id" = 1,
+                 "Vehicle_id" = 2,
+                 "Dealer_id" = 3,
+                 "Job_order_number" = 4,
+                 "material_type" = 5,
+                 "process_type" = 6,
+                 "beginning_date" = 7,
+                 "ending_date" = 8,
+                 "quantity" = 9,
+                 "price" = 10,
+                 "Model" = 11,
+                 "production_date" = 12,
+                 "job_closed_date" = 13,
+                 "vehicle_km" = 14,
+                 "dealer_city" = 15,
+                 "warranty_beginning" = 16,
+                 "warranty_ending" = 17)
+
+
+glimpse(service_dt)
+```
+
+
+# 2. Exploratory Data Analysis - EDA
+
+## 2.1 Vehicle Operation Trend
+
+Trend charts were created by comparing process volumes in services for 2019 and 2020. While 2019 monthly data show a similar trend, 2020 transaction volumes show highly volatility due to the pandemic effect.
+
+```{r}
+
+dt_2019<- service_dt%>%
+  group_by(month=lubridate::month(beginning_date),year=lubridate::year(beginning_date)) %>%
+  filter(year == 2019) %>% summarise(total_quantity = sum(quantity))
+graph_2019 <- dt_2019 %>% select(month,total_quantity)
+dt_2020<- service_dt%>%
+  group_by(month=lubridate::month(beginning_date),year=lubridate::year(beginning_date))%>%
+  filter(year == 2020) %>% summarise(total_quantity = sum(quantity))
+graph_2020 <- dt_2020 %>% select(month,total_quantity)
+dt_graph = merge(graph_2019, graph_2020, by="month", )
+dt_graph_2 <- reshape::melt(dt_graph, id.var='month')
+p<-ggplot(dt_graph_2, aes(x=month, y=value, col=variable)) +geom_line(size=0.9) + 
+  ggtitle("Vehicle Operation Trend", "2019-2020 Operations in Services") + 
+  xlab("Month") + ylab("Total Quantity") + labs(color="Year") + theme_classic()
+p + scale_color_manual(name="Year",
+                      labels = c("2019", "2020"),
+                      values = c("total_quantity.x"="#D16103",
+                                 "total_quantity.y"="#4E84C4"))
+
+```
+ 
+ 
+## 2.2 Proportion of Process Types
+
+The process types in the dataset were shown by proportionally according to their volume. Among the total data for two years, it was seen that the most transactions were made in fault type with 83%
+```{r}
+plot_1<- service_dt%>%
+  mutate(count_total = n())%>%
+  group_by(process_type)%>%
+  mutate(count_vehicle_id = n())%>%
+  select(process_type,count_vehicle_id, count_total)%>%
+  mutate(rate_process_type = round(100*count_vehicle_id/count_total))%>%
+  arrange(desc(rate_process_type))%>%
+  distinct(process_type, rate_process_type)
+print(plot_1)
+
+ggplot(plot_1, aes(x="", y=rate_process_type, fill=process_type)) + geom_bar(stat="identity") + 
+  coord_polar("y") + ggtitle("Proportion of Process Types") +
+  theme_minimal()+ theme(axis.title.y = element_blank(), plot.title = element_text(hjust=0.5))
+```
+
+## 2.3 Model Distribution in Fault Type
+
+The most processed fault type was filtered and the model distribution was created.The most processed model type with fault type is seen as model 23 from the graphic.
+
+```{r,fig.width=9, fig.height=4}
+plot_2<- service_dt%>%
+  filter(process_type == "Ariza")%>%
+  group_by(Model)%>%
+  summarise(count_vehicle_id = n())%>%
+  arrange(desc(Model))
+
+ggplot(plot_2, aes(x = Model, y = count_vehicle_id, fill= Model))+ ggtitle("Model Distribution in Fault Type") +
+  geom_bar(stat="identity") +theme(axis.text.x = element_text(angle=90, size=9, vjust=0.5,hjust=1))
+```
+
+## 2.4 Analyzing Min, Max and Mean of The Vehicle Kms
+
+In this part, The distribution of the vehicle kms was plotted according to the models. After the extreme values were discovered, a different idea of analysis emerged to expel these values.
+
+
+```{r}
+plot_3<- service_dt %>%
+  group_by(Model)%>%
+  summarise(min_km=min(vehicle_km), max_km = max(vehicle_km), mean_km = mean(vehicle_km))%>%
+  pivot_longer(cols = c(-Model))
+print(plot_3)
+
+ ggplot(plot_3, aes(x= Model,y = value, color = name)) +
+   geom_point()+ theme(axis.text.x = element_text(angle=90, size=9, vjust=0.5,hjust=1))+
+   labs(title = "Min, Max and Mean Kms Accoring to the Models")
+    
+```
+
+## 2.5 Discovering Outliers
+
+In order to make sure that outliers actually exist the boxplot was created. From the graph which was drawn at below, the outliers could be seen very clearly especially in max graph.
+
+```{r}
+plot_3<- service_dt %>%
+  group_by(Model)%>%
+  summarise(min_km=min(vehicle_km), max_km = max(vehicle_km), mean_km = mean(vehicle_km))%>%
+  pivot_longer(cols = c(-Model))%>%
+  print(plot_3)
+ ggplot(plot_3, aes(x= name, y=value, fill= name)) +
+  geom_boxplot() +
+  theme_test() +
+  labs(title = "KMs in Boxplot", y = "Km")+
+  scale_y_continuous(breaks=seq(0, 24315000, 5000000))
+```
+
+## 2.6 Elimination of The Outliers
+
+As it can be seen from the codes which was written at below, a new dataset("Eliminated") was created after the determination of the upper and lower ranges.
+
+```{r}
+Q <- quantile(service_dt$vehicle_km, probs=c(.25, .75), na.rm = FALSE)
+iqr <- IQR(service_dt$vehicle_km)
+up <-  Q[2]+1.5*iqr # Upper Range  
+low<- Q[1]-1.5*iqr # Lower Range
+
+eliminated<- subset(service_dt, service_dt$vehicle_km> (Q[1] - 1.5*iqr) & service_dt$vehicle_km < (Q[2]+1.5*iqr))
+
+
+```
+
+Thanks to the elimination of the outliers the range of vehicle kms graph was decreased. Therefore, the graph could be analyzed in more detail as if with a magnifying glass.
+
+```{r}
+plot_4<- eliminated %>%
+  group_by(Model)%>%
+  summarise(min_km=min(vehicle_km), max_km = max(vehicle_km), mean_km = mean(vehicle_km))%>%
+  pivot_longer(cols = c(-Model))
+print(plot_4)
+
+ ggplot(plot_4, aes(x= Model,y = value, color = name)) +
+   geom_point()+ theme(axis.text.x = element_text(angle=90, size=9, vjust=0.5,hjust=1))
+```
+
+## 2.7 The Usage Amount of The Material Types
+
+In order to understand which material types are used more commonly in which process, the following analysis was conducted. It was seen that the "diğer", "parça" and "oil" materials were ranked in order of high to low, respectively, according to their usage amounts.
+
+```{r}
+
+plot_5<- eliminated%>%
+  group_by(process_type, material_type)%>%
+  summarise(count = sum(quantity))%>%
+  arrange(desc(count))
+kable(plot_5,col.names = c("Process_type", "Material_type.", "Total_quantity"))%>%
+   kable_styling("striped", full_width = F) %>%
+  scroll_box(width = "100%", height = "400px")
+```
+
+```{r}
+  ggplot(plot_5, aes(y=count, x = process_type, fill = process_type)) +
+  geom_col() +
+  facet_wrap(~material_type, scales ="free") +
+  theme_minimal() +
+  theme(legend.position = "none") +
+  scale_y_continuous(labels = function(x) format(x, scientific = FALSE)) +
+  theme(axis.text.x = element_text(angle = 90), legend.position = "none")+
+  labs(title = "Total Quantity According to Material Type ",
+       x = "Process Type",
+       y = "Quantity")
+```
+
+Unlike the usage amount graph, when the total part costs are sorted by much less, it is seen that "parts" come first. And then "other" and "oil" followed. The most important reason for this is that the unit cost of "other" part is very low compared to "part".
+
+
+```{r}
+
+plot_6<- eliminated%>%
+  group_by(process_type, material_type)%>%
+  summarise(total_cost = sum(price))%>%
+  arrange(desc(total_cost))
+plot_6
+
+ggplot(plot_6, aes(y=total_cost, x = process_type, fill = process_type)) +
+  geom_col() +
+  facet_wrap(~material_type, scales ="free") +
+  theme_minimal() +
+  theme(legend.position = "none") +
+  scale_y_continuous(labels = function(x) format(x, scientific = FALSE)) +
+  theme(axis.text.x = element_text(angle = 90), legend.position = "none")+
+  labs(title = "Total Cost According to Material Type ",
+       x = "Process Type",
+       y = "Total Cost")
+```
+
+## 2.8 The Most Popular Dealers
+
+The number of processes applied in the cities where the services were located was calculated. Their ratios within the total transactions were calculated.
+
+```{r}
+plot_6<- eliminated%>%
+  count(dealer_city)%>%
+  mutate(percentage = 100*round(n/sum(n),3))%>%
+  arrange(desc(percentage))
+
+kable(plot_6,col.names = c("Dealer_City", "Number of Process.", "Percentage"))%>%
+kable_styling("striped", full_width = F) %>%
+  scroll_box(width = "100%", height = "400px")
+```
+
+The calculated rates were shown in the graph. It was observed that the transactions were concentrated in the Marmara Region, where industry and transportation are intense, and in the Akdeniz and Ege regions, where tourism activities are intense.
+
+```{r}
+plot_6%>%
+  filter(percentage >= 1.0)%>%
+
+ggplot(aes(x=percentage, y=reorder(dealer_city, percentage), fill=percentage)) +
+  geom_col() +
+  scale_fill_gradient("percentage", low="thistle1", high="thistle4") +
+  geom_text(aes(label = paste(format(percentage,digits=1), "%")), size=4, position = position_stack(vjust = 0.5)) +
+  theme_minimal() +
+  theme(legend.position = "none", plot.title = element_text(vjust = 0.5)) +
+  labs(x = "Percentages",
+       y = "Dealers",
+       title = "The Most Popular Dealers")
+```
+
+
+## 2.9 The Total Price According to Types of Model
+
+In this section, the dataset is grouped according to the model production date variables, and it is aimed to find the model with the highest service expenditure. Model 23 was seen to be the most costly model.
+
+```{r}
+plot_7 <- eliminated %>%
+  group_by(Model, production_date) %>%
+  summarise(total_price = sum(price)) %>%
+  mutate(age_of_car = as.numeric(format(Sys.Date(), "%Y"))-production_date)%>%
+  arrange(desc(total_price))
+plot_7
+```
+
+```{r}
+ggplot(plot_7, aes(x = Model, y = total_price, fill= Model))+
+  geom_point(stat="identity", position = "stack") +theme(axis.text.x = element_text(angle=90, size=9, vjust=0.5,hjust=1))+
+  labs(x="Model", y="Total Price (TL)", fill ="Types of Model", title = "The Total Price According to Types of Model")
+
+```
+
+## 2.10 The Most Costly Model: Model 23
+
+When filtered according to Model 23, which has the highest service cost, it was seen that the vehicles' service costs with the production year 2016 and 2017 were the two highest models.
+
+```{r}
+plot_8 <- eliminated %>%
+  group_by(Model, production_date) %>%
+  filter(Model =="model_23")%>%
+  summarise(total_price = sum(price)) %>%
+  arrange(desc(total_price))
+  
+plot_8
+```
+
+## 2.11 The Rate of Warranty Coverage of Service Expenses Belongs to Model 23
+
+According to vehicle age, the rate of warranty coverage of service expenses according to vehicle age has been examined in the chart below. Since the general warranty period is 3 years, the number of transactions made within the warranty scope in the first 3 years has been high but has become very low after 4 years. After the age of 7, all transactions are made out of warranty.
+
+```{r}
+plot_9 <- eliminated %>%
+  mutate(Warranty_status = ifelse(beginning_date>warranty_ending,"out_of_warranty","warranty_expenses"))%>%
+  mutate(age_of_car = as.numeric(format(Sys.Date(), "%Y"))-production_date)%>%
+  group_by(Model, age_of_car, Warranty_status, )%>%
+  filter(Model =="model_23")%>%
+  summarise(total_price = sum(price)) %>%
+  group_by(age_of_car)%>%
+  mutate(rate_of_expenses = round(total_price / sum(total_price)*100, 2))%>%
+  arrange(desc(age_of_car))
+  plot_9
+  
+ggplot(plot_9, aes(x = age_of_car, y = rate_of_expenses, fill= Warranty_status))+
+  geom_bar(stat="identity", position = "dodge") +theme(axis.text.x = element_text(angle=0, size=10, vjust=0,hjust=1))+scale_x_continuous(breaks=seq(0,9,1)) + labs(x="The Rate of Expenses (TL)", y="Age of Car (Year)", color="Warranty Status", title = "The Rate of Warranty Coverage of Service Expenses")
+
+
+```
+
