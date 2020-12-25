@@ -1,9 +1,30 @@
-## Group Project
 
-[Project Proposal](Project-Proposal.html)
+## Group Members
 
-[Exploratory Data Analysis](Group_Project/madagaskar_group_project_EDA_v10.html)
+- [Barış SİVAS](https://github.com/pjournal/mef04-sivasbaris)
+- [Neriman GÜRSOY](https://github.com/pjournal/mef04-nerigrsy)
+- [Ozan Barış BAYKAN](https://github.com/pjournal/mef04-baykano)
+- [Sena KALEMCİ](https://github.com/pjournal/mef04-senakalemci)
+- [Tuğba ÜNAL](https://github.com/pjournal/mef04-unaltugba)
 
-[Group Assignment - Isbike](Isbike-Shiny/Isbike-Shiny-App.html)
-  - Shiny App Link : shiny::runGitHub("pjournal/mef04g-madagaskar",subdir="Isbike-Shiny",ref='gh-pages')
+
+## ASSIGNMENT
+
+In this assignment, the main purpose is to make an exploratory data analysis by using the IsBike dataset.
+
+- Data: [IBB Open Data Portal](https://data.ibb.gov.tr/en/dataset/isbike-istasyon-durumlari-web-servisi)
+- Exploratory Data Analysis (EDA): [html](Isbike-Shiny/Isbike-Shiny-App.html)
+- Shiny App: 
+    shiny::runGitHub(“pjournal/mef04g-madagaskar”,subdir=”Isbike-Shiny”,ref=’gh-pages’)
+
+
+## PROJECT
+
+- Data: 
+- Proposal: [html](Project-Proposal.html)
+- Exploratory Data Analysis (EDA): [html](Group_Project/madagaskar_group_project_EDA_v10.html)
+
+
+
+
 
