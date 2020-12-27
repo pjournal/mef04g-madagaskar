@@ -23,6 +23,7 @@ In this assignment, the main purpose is to make an exploratory data analysis by 
 - Data: 
 - Proposal: [html](Project-Proposal.html)
 - Exploratory Data Analysis (EDA): [html](Group_Project/madagaskar_group_project_EDA_v10.html)
+- Final Report: [html](madagaskar_group_project_final_report.html)
 - Presentation: [html]()
 
 
