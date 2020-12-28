@@ -20,7 +20,6 @@ In this assignment, the main purpose is to make an exploratory data analysis by 
 
 ## PROJECT
 
-- Data: 
 - Proposal: [html](Project-Proposal.html)
 - Exploratory Data Analysis (EDA): [html](Group_Project/madagaskar_group_project_EDA_v10.html)
 - Shiny App: [App](https://madagaskar.shinyapps.io/ShinyAppMadagaskaR/?_ga=2.188172648.1568701459.1609095474-1735318797.1606586767)
