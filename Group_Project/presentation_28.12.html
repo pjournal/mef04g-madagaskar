@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>X Vehicle Company Service</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="MadagaskaR" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# X Vehicle Company Service
+### MadagaskaR
+### MEF University
+### 2020/12/30
+
+---
+
+
+
+
+
+
+
+
+class:left, bottom
+
+.pull-left[
+
+### GROUP MEMBERS
+
+**Barış SİVAS**&lt;br&gt;
+**Neriman GÜRSOY**&lt;br&gt;
+**Ozan Barış BAYKAN**&lt;br&gt;
+**Sena KALEMCİ**&lt;br&gt;
+**Tuğba ÜNAL**&lt;br&gt;
+]
+
+
+.pull-right[
+
+### AGENDA
+
+**1. Data Information**&lt;br&gt;
+**2. Exploratory Data Analysis**&lt;br&gt;
+**3. Shiny App**&lt;br&gt;
+**4. Conclusion**&lt;br&gt;
+]
+
+
+---
+
+## 1. Data Information
+
+
+
+
+- [X Vehicle Company Service]("https://github.com/pjournal/mef04g-madagaskar/blob/gh-pages/Data/x_vehicle_company_service_dataset_v4.rds")
+ - 561,142 row and 19 feature
+- Data check
+  - CSV to RDS
+  - NA and Duplicated Values
+  - Outliers
+  - Renaming of the columns
+  - date conversion
+- Packages
+  - tidyverse, lubridate, rio , shiny, etc.
+
+
+
+```
+##  [1] "Material_id"              "Vehicle_id"              
+##  [3] "Dealer_id"                "Job_order_number"        
+##  [5] "material_type"            "process_type"            
+##  [7] "beginning_date"           "ending_date"             
+##  [9] "quantity"                 "price"                   
+## [11] "Model"                    "production_date"         
+## [13] "job_closed_date"          "vehicle_km"              
+## [15] "dealer_city"              "warranty_beginning"      
+## [17] "warranty_ending"          "Garanti Baslangic tarihi"
+## [19] "Garanti Bitis tarihi"
+```
+
+
+---
+
+## 2. Exploratory Data Analysis
+
+Vehicle Operation Trend
+
+&lt;img src="presentation_28.12_files/figure-html/unnamed-chunk-3-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+&lt;font size="2"&gt; 
+- Trend charts were created by comparing process volumes in services for 2019 and 2020.&lt;br&gt;
+- While 2019 monthly data show a similar trend, 2020 transaction volumes show highly volatility due to the pandemic effect.&lt;br&gt;
+
+
+
+---
+
+## 2. Exploratory Data Analysis
+
+Proportion of Process Types
+
+&lt;img src="presentation_28.12_files/figure-html/unnamed-chunk-4-1.png" width="55%" style="display: block; margin: auto;" /&gt;
+ &lt;font size="2"&gt; 
+- The process types in the data set were shown by proportionally according to their volume.&lt;br&gt;
+- Among the total data for two years, it was seen that the most transactions were made in fault type with 83%.&lt;br&gt;
+
+
+---
+
+## 2. Exploratory Data Analysis
+
+Distribution in Fault Type
+
+&lt;img src="presentation_28.12_files/figure-html/unnamed-chunk-5-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+ &lt;font size="2"&gt; 
+- The most processed fault type was filtered and the model distribution was created.&lt;br&gt;
+- The most processed model type with fault type is seen as model 23 from the graphic.&lt;br&gt;
+
+
+
+---
+
+## 2. Exploratory Data Analysis
+
+Analyzing Min, Max and Mean of The Vehicle Kms
+
+.pull-left[
+
+&lt;img src="presentation_28.12_files/figure-html/unnamed-chunk-6-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+]
+
+.pull-right[
+
+&lt;img src="presentation_28.12_files/figure-html/unnamed-chunk-7-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+]
+
+&lt;font size="2"&gt;
+- The distribution of the vehicle kms was plotted according to the models.
+
+
+---
+
+## 2. Exploratory Data Analysis
+
+The Usage Amount of The Material Types
+
+&lt;img src="presentation_28.12_files/figure-html/unnamed-chunk-8-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+&lt;font size="2"&gt; 
+- It was seen that the "diğer", "parça" and "oil" materials were ranked in order of high to low, respectively, according to their usage amounts.&lt;br&gt;
+- Unlike the usage amount graph, when the total part costs are sorted by much less, it is seen that "parts" come first. And then "other" and "oil" followed. The most important reason for this is that the unit cost of "other" part is very low compared to "part".
+
+---
+
+## 2. Exploratory Data Analysis
+
+The Most Popular Dealers
+
+&lt;img src="presentation_28.12_files/figure-html/unnamed-chunk-9-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+&lt;font size="2"&gt; 
+- The calculated rates was observed that the transactions were concentrated in the Marmara Region, where industry and transportation are intense, and in the **Akdeniz** and **Ege** regions, where tourism activities are intense.
+
+
+
+---
+
+## 2. Exploratory Data Analysis
+
+The Total Price According to Types of Model
+
+&lt;img src="presentation_28.12_files/figure-html/unnamed-chunk-10-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+&lt;font size="2"&gt; 
+- The dataset is grouped according to the model production date variables, and it is aimed to find the model with the highest service expenditure.&lt;br&gt;
+- **Model 23** was seen to be the most costly model.
+
+---
+
+## 3. Shiny App
+
+
+![](https://github.com/pjournal/mef04g-madagaskar/blob/gh-pages/Group_Project/Images/shiny.png?raw=true)
+
+---
+
+## 4. Conclusion
+
+1. The operation trend was changed in 2020 due to the pandemic issue.It should not be overlooked that this situation may change the demands in the next few years.
+2. Almost 83% of the transactions made in the services consist of “Ariza”.
+3. Model 23 is the most expensive vehicle model, as it is the most frequently visited to the dealers.
+4. It was seen that the “diğer”, “parça” and “yag” materials were ranked in order of high to low, respectively, according to their usage amounts in whole process types.
+5. It was observed that the transactions were concentrated in the Marmara Region(Istanbul), where industry and transportation are intense, and in the Akdeniz and Ege regions(Antalya, İzmir), where tourism activities are intense.
+
+---
+
+class: center, middle
+
+&lt;font size="10"&gt; 
+.pull-bottom[
+**THANK YOU**
+]
+&lt;/font&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
