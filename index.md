@@ -28,7 +28,7 @@ In this assignment, the main purpose is to make an exploratory data analysis by 
     **`shiny::runGitHub("pjournal/mef04g-madagaskar",subdir="Group_Project",ref='gh-pages')`**
 - Final Report: [html](Group_Project/madagaskar_group_project_final_report.html)
 - Presentation: [html](Group_Project/presentation_28.12.html)
-- Teaser: [html](https://youtu.be/lThPepmVR5s)
+- Teaser: [YouTube](https://youtu.be/lThPepmVR5s)
 
 
 
