@@ -14,9 +14,8 @@ In this assignment, the main purpose is to make an exploratory data analysis by 
 
 - Data: [IBB Open Data Portal](https://data.ibb.gov.tr/en/dataset/isbike-istasyon-durumlari-web-servisi)
 - Exploratory Data Analysis (EDA): [html](Isbike-Shiny/Isbike-Shiny-App.html)
-- Shiny App: You can use this [link](https://madagaskar.shinyapps.io/MadagaskaRIsbikeShiny/)
-    or you can run the shiny app by just typing the following code in your own R-console;
-    **`shiny::runGitHub("pjournal/mef04g-madagaskar",subdir="Isbike-Shiny",ref='gh-pages')`**
+- Shiny App:[App](https://madagaskar.shinyapps.io/MadagaskaRIsbikeShiny/)
+
 
 
 ## PROJECT
